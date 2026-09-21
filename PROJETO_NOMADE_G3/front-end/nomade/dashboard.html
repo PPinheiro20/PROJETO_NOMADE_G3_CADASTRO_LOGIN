@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel de Controle — Nômade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+  <div class="content">
+
+    <div class="page-head">
+      <div>
+        <h1>Painel de Controle</h1>
+        <p>Visão geral das vendas, estoque e atividade da operação nas últimas 24 horas.</p>
+      </div>
+      <a href="movimentacao.html" class="btn-accent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 5v14M5 12h14"/></svg>
+        Registrar movimentação
+      </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Vendas totais (24h)</div>
+          <div class="metric-value">R$ 12.840<span class="unit">,00</span></div>
+          <div class="metric-delta up">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+            8,4% vs. ontem
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Estoque atual</div>
+          <div class="metric-value">4.281<span class="unit">SKUs</span></div>
+          <div class="metric-delta warn">Pico de 4.900 há 3 dias</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Itens com baixo estoque</div>
+          <div class="metric-value">12<span class="unit">alertas</span></div>
+          <div class="metric-delta down">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+            3 novos hoje
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Atividade recente</div>
+          <div class="metric-value">84<span class="unit">eventos</span></div>
+          <div class="metric-delta up">Última hora: 6</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-lg-8">
+        <div class="panel h-100">
+          <div class="panel-header">
+            <div class="panel-title">Comparação de volume de vendas</div>
+            <span class="panel-title label">Semana atual</span>
+          </div>
+          <div class="bar-chart" id="salesChart"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="panel h-100">
+          <div class="panel-header">
+            <div class="panel-title">Distribuição por marca</div>
+          </div>
+          <div class="donut-wrap" id="stockDonut"></div>
+          <div class="mt-4">
+            <div class="legend-row">
+              <span class="legend-key"><span class="dot" style="background:#ff5a1f"></span> Nike / Jordan</span>
+              <span class="pct">45%</span>
+            </div>
+            <div class="legend-row">
+              <span class="legend-key"><span class="dot" style="background:#ffb37a"></span> Adidas</span>
+              <span class="pct">30%</span>
+            </div>
+            <div class="legend-row">
+              <span class="legend-key"><span class="dot" style="background:#3a3a42"></span> Outras marcas</span>
+              <span class="pct">25%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Movimentações recentes</div>
+            <a href="movimentacao.html" class="small">Ver tudo</a>
+          </div>
+          <div class="table-responsive">
+            <table class="table-app">
+              <thead>
+                <tr>
+                  <th>Descrição do item</th>
+                  <th>Ação</th>
+                  <th>Qtd</th>
+                  <th>Status</th>
+                  <th>Horário</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="cell-strong">AJ1 Retro High "Chicago"</td>
+                  <td class="cell-muted">Reposição</td>
+                  <td>+24</td>
+                  <td><span class="badge-app badge-success">Sucesso</span></td>
+                  <td class="cell-muted">14:22:01</td>
+                </tr>
+                <tr>
+                  <td class="cell-strong">Dunk Low "Panda"</td>
+                  <td class="cell-muted">Saída</td>
+                  <td>-12</td>
+                  <td><span class="badge-app badge-info">Enviado</span></td>
+                  <td class="cell-muted">13:45:12</td>
+                </tr>
+                <tr>
+                  <td class="cell-strong">Yeezy Boost 350 V2</td>
+                  <td class="cell-muted">Transferência</td>
+                  <td>5</td>
+                  <td><span class="badge-app badge-warning">Pendente</span></td>
+                  <td class="cell-muted">12:30:55</td>
+                </tr>
+                <tr>
+                  <td class="cell-strong">NB 2002R Protection Pack</td>
+                  <td class="cell-muted">Reposição</td>
+                  <td>+40</td>
+                  <td><span class="badge-app badge-success">Sucesso</span></td>
+                  <td class="cell-muted">11:15:00</td>
+                </tr>
+                <tr>
+                  <td class="cell-strong">AM1 "Big Bubble"</td>
+                  <td class="cell-muted">Devolução</td>
+                  <td>+1</td>
+                  <td><span class="badge-app badge-success">Sucesso</span></td>
+                  <td class="cell-muted">09:44:23</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 19a2.1 2.1 0 0 0 4 0"/></svg>
+              Alertas inteligentes
+            </div>
+          </div>
+          <div class="alert-item">
+            <span class="alert-dot" style="background:#f2545b"></span>
+            <div>
+              <div class="title">Estoque crítico <time>há 2m</time></div>
+              <p>Jordan 4 "Military Black" (Tam. 10) está abaixo do limite — restam 2 unidades.</p>
+            </div>
+          </div>
+          <div class="alert-item">
+            <span class="alert-dot" style="background:#f0b429"></span>
+            <div>
+              <div class="title">Logística <time>há 14m</time></div>
+              <p>Remessa do Centro Portland está atrasada em 24 horas.</p>
+            </div>
+          </div>
+          <div class="alert-item">
+            <span class="alert-dot" style="background:#4ea8ff"></span>
+            <div>
+              <div class="title">Alerta de preço <time>há 1h</time></div>
+              <p>Valor de mercado do Yeezy Slide "Bone" aumentou 15%.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  nomadeMountShell("dashboard", { searchPlaceholder: "Pesquisar estoque..." });
+
+  nomadeRenderBarChart("salesChart", [
+    { label: "SEG", value: 38 },
+    { label: "TER", value: 52 },
+    { label: "QUA", value: 44 },
+    { label: "QUI", value: 63 },
+    { label: "SEX", value: 27 },
+    { label: "SÁB", value: 71 },
+    { label: "DOM", value: 58 },
+  ]);
+
+  nomadeRenderDonut("stockDonut", "4,2k", "Total", [
+    { value: 45, color: "#ff5a1f" },
+    { value: 30, color: "#ffb37a" },
+    { value: 25, color: "#3a3a42" },
+  ]);
+</script>
+<script src="assets/js/integration.js"></script>
+</body>
+</html>

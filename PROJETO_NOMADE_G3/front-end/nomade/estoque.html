@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Gestão de Estoque — Nômade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+  <div class="content">
+
+    <div class="breadcrumb-app">Admin / Produtos / <span class="current">Visão de estoque</span></div>
+    <div class="page-head">
+      <div>
+        <h1>Gestão de Estoque</h1>
+        <p>Consulte, filtre e rastreie todos os itens ativos no inventário.</p>
+      </div>
+      <a href="produtos.html#cadastro" class="btn-accent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 5v14M5 12h14"/></svg>
+        Adicionar produto
+      </a>
+    </div>
+
+    <!-- Summary strip -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Valor total de SKU</div>
+          <div class="metric-value" style="font-size:1.4rem">R$ 1.284.500</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Unidades em trânsito</div>
+          <div class="metric-value" style="font-size:1.4rem">432</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Encomendas</div>
+          <div class="metric-value" style="font-size:1.4rem">18</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Reposição crítica</div>
+          <div class="metric-value" style="font-size:1.4rem;color:var(--danger)">04 itens</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+        <div class="pill-tabs">
+          <button class="active">Todos os itens</button>
+          <button>Novidades</button>
+          <button>Arquivo</button>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="input-icon-wrap" style="width:240px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+            <input class="form-control-app" id="filterInput" placeholder="Filtrar por nome, código, lote...">
+          </div>
+          <button class="btn-ghost">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16l-6.2 7.2V19l-3.6 2v-8.8z"/></svg>
+            Filtros
+          </button>
+        </div>
+      </div>
+
+      <p class="text-muted small mb-2">Mostrando 6 de 1.240 produtos</p>
+
+      <div class="table-responsive">
+        <table class="table-app" id="stockTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Código</th>
+              <th>Fornecedor</th>
+              <th>Lote</th>
+              <th>Rastreamento</th>
+              <th>Modelo</th>
+              <th>Cor</th>
+              <th>Estoque</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-strong">AJ1 Retro High OG</td>
+              <td class="cell-muted">NIKE-2024-H01</td>
+              <td class="cell-muted">Footlocker EU</td>
+              <td class="cell-muted">#77-A</td>
+              <td><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></td>
+              <td class="cell-muted">Lost &amp; Found</td>
+              <td><span class="swatch" style="--dot:#b23b2e">Persian Red</span></td>
+              <td><span class="badge-app badge-success">128 un.</span></td>
+            </tr>
+            <tr>
+              <td class="cell-strong">Yeezy Boost 350</td>
+              <td class="cell-muted">ADI-YZY-V2</td>
+              <td class="cell-muted">Adidas Confirmed</td>
+              <td class="cell-muted">#82-C</td>
+              <td><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></td>
+              <td class="cell-muted">Onyx</td>
+              <td><span class="swatch" style="--dot:#171719">Black Carbon</span></td>
+              <td><span class="badge-app badge-warning">17 un.</span></td>
+            </tr>
+            <tr>
+              <td class="cell-strong">New Balance 2002R</td>
+              <td class="cell-muted">NB-PRT-09</td>
+              <td class="cell-muted">StockX Direct</td>
+              <td class="cell-muted">#12-Z</td>
+              <td><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></td>
+              <td class="cell-muted">Protection Pack</td>
+              <td><span class="swatch" style="--dot:#c7c9cf">Rain Cloud</span></td>
+              <td><span class="badge-app badge-success">64 un.</span></td>
+            </tr>
+            <tr>
+              <td class="cell-strong">Travis Scott x Dunk</td>
+              <td class="cell-muted">NIKE-TS-01</td>
+              <td class="cell-muted">SNKRS Raffle</td>
+              <td class="cell-muted">#01-S</td>
+              <td><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></td>
+              <td class="cell-muted">Cactus Jack</td>
+              <td><span class="swatch" style="--dot:#7a5230">Earth Brown</span></td>
+              <td><span class="badge-app badge-danger">2 un.</span></td>
+            </tr>
+            <tr>
+              <td class="cell-strong">Off-White Presto</td>
+              <td class="cell-muted">OW-NIKE-04</td>
+              <td class="cell-muted">GOAT Elite</td>
+              <td class="cell-muted">#44-P</td>
+              <td><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></td>
+              <td class="cell-muted">The Ten</td>
+              <td><span class="swatch" style="--dot:#eceae3">Arctic White</span></td>
+              <td><span class="badge-app badge-success">39 un.</span></td>
+            </tr>
+            <tr>
+              <td class="cell-strong">Dunk Low Panda</td>
+              <td class="cell-muted">NIKE-PND-99</td>
+              <td class="cell-muted">Local Boutique</td>
+              <td class="cell-muted">#99-K</td>
+              <td><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></td>
+              <td class="cell-muted">Standard</td>
+              <td><span class="swatch" style="--dot:#f2f0ea">White / Black</span></td>
+              <td><span class="badge-app badge-success">91 un.</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between mt-3">
+        <span class="text-muted small">Página 1 de 62</span>
+        <div class="pager">
+          <button disabled>‹</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>›</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  nomadeMountShell("estoque", { searchPlaceholder: "Pesquisar estoque global..." });
+  nomadeInitTableFilter("filterInput", "#stockTable");
+</script>
+<script src="assets/js/integration.js"></script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Entrada &amp; Saída de Mercadoria — Nômade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+  <div class="content">
+
+    <div class="page-head">
+      <div>
+        <h1 id="pageTitle">Saída de Mercadoria</h1>
+        <p id="pageSubtitle">Registrar baixa técnica de estoque por venda ou ajuste.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn-ghost" type="button" onclick="history.back()">Cancelar</button>
+        <button class="btn-accent" type="submit" form="moveForm" id="confirmBtn">Confirmar saída</button>
+      </div>
+    </div>
+
+    <div class="pill-tabs mb-4" id="modeTabs">
+      <button class="active" data-mode="saida">Saída de mercadoria</button>
+      <button data-mode="entrada">Entrada de mercadoria</button>
+      <button data-mode="retirada">Retirada do produto</button>
+    </div>
+
+    <form id="moveForm">
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="panel mb-3">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8V5a2 2 0 0 1 2-2h3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M21 16v3a2 2 0 0 1-2 2h-3M3 12h18"/></svg>
+                Identificação de produto
+              </div>
+            </div>
+            <label class="field-label" for="skuInput">Busca por SKU ou código de barras</label>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <input class="form-control-app" id="skuInput" value="NK-SB-DUN-42-ORNG" style="font-family:monospace;font-weight:600;color:var(--accent);border-color:var(--accent)">
+              <span class="badge-app badge-success">Match encontrado</span>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="panel h-100">
+                <label class="field-label">Quantidade</label>
+                <div class="stepper" data-stepper>
+                  <button type="button" data-dir="down">−</button>
+                  <input type="number" id="qtyInput" value="1" min="1">
+                  <button type="button" data-dir="up">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel h-100">
+                <label class="field-label" for="motivoSelect" id="motivoLabel">Motivo da saída</label>
+                <select class="form-select-app" id="motivoSelect">
+                  <option>Venda (Checkout)</option>
+                  <option>Transferência entre lojas</option>
+                  <option>Produto com falha</option>
+                  <option>Ajuste de inventário</option>
+                  <option>Devolução ao fornecedor</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel mb-3">
+            <label class="field-label" for="destinoInput" id="destinoLabel">Destino / cliente</label>
+            <div class="input-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1-4 4-6.2 7.5-6.2s6.5 2.2 7.5 6.2"/></svg>
+              <input class="form-control-app" id="destinoInput" placeholder="Nome do cliente, loja destino ou ID de envio">
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Últimas movimentações (sessão atual)</div>
+              <span class="badge-app badge-success">Sync status: active</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table-app">
+                <thead>
+                  <tr><th>Timestamp</th><th>SKU</th><th>Qtd</th><th>Motivo</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-muted">14:22:05</td>
+                    <td class="cell-strong">AD-YZ-350-41-SLT</td>
+                    <td>02</td>
+                    <td><span class="badge-app badge-info">Venda</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-muted">14:18:12</td>
+                    <td class="cell-strong">NK-AJ1-HI-40-UNC</td>
+                    <td>01</td>
+                    <td><span class="badge-app badge-danger">Ajuste</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="panel">
+            <div class="product-shot mb-3">
+              <span class="sku-tag">SKU: NK-SB-DUN-42-ORNG</span>
+              <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#f2f0ea" opacity="0.9" d="M8 78c14-6 30-9 44-19 12-9 20-22 34-27 13-5 27-2 38 6 9 7 13 17 24 21 12 4 26 2 40 7 6 2 10 6 10 11 0 8-9 13-20 13H22c-9 0-16-4-16-9 0-1 1-2 2-3z"/>
+                <path fill="#0a0a0c" opacity="0.5" d="M8 78c14-6 30-9 44-19 3 4 7 8 12 11-11 5-19 12-24 20H22c-9 0-16-4-16-9 0-1 1-2 2-3z"/>
+              </svg>
+            </div>
+            <h3 class="font-display" style="font-size:1.1rem;margin-bottom:2px">Nike SB Dunk Low</h3>
+            <p class="text-muted small mb-3">Solado Zoom Air · couro premium</p>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <div class="panel" style="background:var(--panel-2);padding:12px">
+                  <div class="field-label mb-1">Estoque atual</div>
+                  <div class="font-display" style="font-size:1.5rem;font-weight:700">12 <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--font-body)">un</span></div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="panel" style="background:var(--panel-2);padding:12px">
+                  <div class="field-label mb-1">Pós-operacional</div>
+                  <div class="font-display" style="font-size:1.5rem;font-weight:700;color:var(--accent)" id="postOpValue">11 <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--font-body)">un</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 p-2" style="background:var(--warning-soft);border:1px solid rgba(240,180,41,0.3);border-radius:var(--radius-sm)" id="warnBox">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--warning);flex-shrink:0"><path d="M12 3 2 20h20z"/><path d="M12 9.5v4.5M12 17h.01"/></svg>
+              <p class="small text-muted m-0">Esta operação removerá permanentemente os itens do inventário físico. Confira se o SKU corresponde à etiqueta.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  nomadeMountShell("movimentacao", { searchPlaceholder: "Global SKU search..." });
+
+  const BASE_STOCK = 12;
+  const modeConfig = {
+    saida: {
+      title: "Saída de Mercadoria",
+      subtitle: "Registrar baixa técnica de estoque por venda ou ajuste.",
+      confirm: "Confirmar saída",
+      motivo: "Motivo da saída",
+      destino: "Destino / cliente",
+      sign: -1,
+      warning: "Esta operação removerá permanentemente os itens do inventário físico. Confira se o SKU corresponde à etiqueta.",
+      options: ["Venda (Checkout)", "Transferência entre lojas", "Produto com falha", "Ajuste de inventário", "Devolução ao fornecedor"],
+    },
+    entrada: {
+      title: "Entrada de Mercadoria",
+      subtitle: "Registrar recebimento de estoque por reposição ou devolução.",
+      confirm: "Confirmar entrada",
+      motivo: "Motivo da entrada",
+      destino: "Origem / fornecedor",
+      sign: 1,
+      warning: "Confirme a contagem física antes de lançar — a entrada atualiza o estoque disponível imediatamente.",
+      options: ["Reposição de fornecedor", "Devolução de cliente", "Transferência entre lojas", "Novo lote cadastrado"],
+    },
+    retirada: {
+      title: "Retirada do Produto",
+      subtitle: "Registrar retirada definitiva por avaria, extravio ou recall.",
+      confirm: "Confirmar retirada",
+      motivo: "Causa da retirada",
+      destino: "Responsável pela retirada",
+      sign: -1,
+      warning: "A retirada é irreversível e será registrada no histórico de auditoria do produto.",
+      options: ["Produto avariado", "Extravio", "Recall do fabricante", "Amostra interna"],
+    },
+  };
+
+  function applyMode(mode) {
+    const cfg = modeConfig[mode];
+    document.getElementById("pageTitle").textContent = cfg.title;
+    document.getElementById("pageSubtitle").textContent = cfg.subtitle;
+    document.getElementById("confirmBtn").textContent = cfg.confirm;
+    document.getElementById("motivoLabel").textContent = cfg.motivo;
+    document.getElementById("destinoLabel").textContent = cfg.destino;
+    document.getElementById("warnBox").querySelector("p").textContent = cfg.warning;
+    const select = document.getElementById("motivoSelect");
+    select.innerHTML = cfg.options.map(o => `<option>${o}</option>`).join("");
+    updatePostOp();
+  }
+
+  function updatePostOp() {
+    const mode = document.querySelector("#modeTabs button.active").dataset.mode;
+    const qty = parseInt(document.getElementById("qtyInput").value || "0", 10);
+    const result = BASE_STOCK + modeConfig[mode].sign * qty;
+    document.getElementById("postOpValue").innerHTML =
+      Math.max(0, result) + ' <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--font-body)">un</span>';
+  }
+
+  document.querySelectorAll("#modeTabs button").forEach(btn => {
+    btn.addEventListener("click", () => applyMode(btn.dataset.mode));
+  });
+  document.getElementById("qtyInput").addEventListener("change", updatePostOp);
+  document.getElementById("qtyInput").addEventListener("input", updatePostOp);
+
+  document.getElementById("moveForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const mode = document.querySelector("#modeTabs button.active").dataset.mode;
+    nomadeToast(modeConfig[mode].confirm.replace("Confirmar ", "") + " registrada com sucesso.");
+  });
+
+  applyMode("saida");
+</script>
+<script src="assets/js/integration.js"></script>
+</body>
+</html>

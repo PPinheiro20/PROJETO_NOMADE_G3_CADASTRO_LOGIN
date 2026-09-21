@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatórios — Nômade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+  <div class="content">
+
+    <div class="page-head">
+      <div>
+        <h1>Gráficos de Desempenho de Vendas</h1>
+        <p>Preencha e acompanhe o desempenho mensal e anual da empresa.</p>
+      </div>
+      <button class="btn-accent" data-bs-toggle="modal" data-bs-target="#chartModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 5v14M5 12h14"/></svg>
+        Criar gráfico
+      </button>
+    </div>
+
+    <div class="row g-3" id="chartGrid"></div>
+
+  </div>
+</div>
+
+<!-- Modal: preencher gráfico -->
+<div class="modal fade" id="chartModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg)">
+      <div class="modal-header" style="border-color:var(--border)">
+        <h5 class="modal-title font-display">Preencha o gráfico de desempenho</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="chartForm">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="field-label" for="cAno">Ano</label>
+              <input class="form-control-app" id="cAno" type="number" min="2000" max="2100" value="2026" required>
+            </div>
+            <div class="col-6">
+              <label class="field-label" for="cMes">Mês</label>
+              <select class="form-select-app" id="cMes" required>
+                <option>Janeiro</option><option>Fevereiro</option><option>Março</option>
+                <option>Abril</option><option>Maio</option><option>Junho</option>
+                <option>Julho</option><option>Agosto</option><option>Setembro</option>
+                <option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="field-label" for="cVendas">Quantidade de vendas</label>
+              <input class="form-control-app" id="cVendas" type="number" min="0" required>
+            </div>
+            <div class="col-12">
+              <label class="field-label" for="cDescricao">Descrição sobre o mês</label>
+              <textarea class="form-control-app" id="cDescricao" rows="3" placeholder="Contexto, sazonalidade, campanhas do período..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-color:var(--border)">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn-accent">Criar gráfico</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  nomadeMountShell("relatorios", { searchPlaceholder: "Pesquisar relatórios..." });
+
+  const seedCharts = [
+    { ano: 2024, mes: "Anual", desc: "Crescimento constante ao longo do ano, com pico em novembro.",
+      values: [12, 34, 22, 20, 30, 41] },
+    { ano: 2025, mes: "Anual", desc: "Expansão da linha de sneakers colaborativas.",
+      values: [15, 38, 24, 23, 33, 45] },
+    { ano: 2027, mes: "Projeção", desc: "Meta conservadora para o novo centro de distribuição.",
+      values: [8, 6, 9, 7, 10, 34] },
+    { ano: 2028, mes: "Projeção", desc: "Cenário otimista com abertura de 2 lojas físicas.",
+      values: [10, 8, 12, 9, 13, 40] },
+  ];
+
+  function renderCharts() {
+    const grid = document.getElementById("chartGrid");
+    grid.innerHTML = seedCharts.map((c, i) => `
+      <div class="col-lg-6">
+        <div class="panel h-100">
+          <div class="panel-header">
+            <div class="panel-title">${c.ano}</div>
+            <span class="badge-app badge-neutral">${c.mes}</span>
+          </div>
+          <div class="bar-chart" id="rchart-${i}" style="height:160px"></div>
+          <div class="panel mt-3" style="background:var(--panel-2);padding:12px">
+            <div class="field-label mb-1">Descrição sobre o período</div>
+            <p class="small text-muted m-0">${c.desc}</p>
+          </div>
+        </div>
+      </div>`).join("");
+
+    seedCharts.forEach((c, i) => {
+      nomadeRenderBarChart(`rchart-${i}`, c.values.map((v, idx) => ({ label: "M" + (idx + 1), value: v })));
+    });
+  }
+  renderCharts();
+
+  document.getElementById("chartForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const ano = document.getElementById("cAno").value;
+    const mes = document.getElementById("cMes").value;
+    const vendas = parseInt(document.getElementById("cVendas").value || "0", 10);
+    const desc = document.getElementById("cDescricao").value || "Sem descrição informada.";
+    seedCharts.unshift({
+      ano, mes,
+      desc,
+      values: [vendas * 0.6, vendas * 0.8, vendas, vendas * 0.7, vendas * 0.9, vendas].map(v => Math.round(v)),
+    });
+    renderCharts();
+    bootstrap.Modal.getInstance(document.getElementById("chartModal")).hide();
+    nomadeToast("Gráfico criado com sucesso.");
+    e.target.reset();
+  });
+</script>
+<script src="assets/js/integration.js"></script>
+</body>
+</html>
