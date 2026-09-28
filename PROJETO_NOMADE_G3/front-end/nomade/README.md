@@ -1,66 +1,69 @@
 # Nômade — Sistema de Gestão de Estoque (front-end)
 
-Projeto front-end estático, construído com **Bootstrap 5**, baseado nos
-wireframes enviados (login, cadastro/entrada/saída de produto, painel de
-controle, inventário, usuários, gráficos de desempenho e configurações).
+Front-end estático em HTML, CSS e JavaScript, integrado à API do projeto Nômade.
 
 ## Como abrir
 
-Não há build nem dependências de instalação. Basta abrir `index.html`
-diretamente no navegador (duplo clique) ou servir a pasta com qualquer
-servidor estático:
+A API deve estar executando (por padrão em `http://localhost:3000` quando os HTMLs são abertos via `file://`).
+Para servir o front-end localmente:
 
 ```bash
-# opção simples com Python
 python3 -m http.server 5500
-# depois acesse http://localhost:5500
 ```
 
-O login é apenas ilustrativo: qualquer envio do formulário leva ao painel.
+Depois acesse `http://localhost:5500`.
 
-## Estrutura
+## Estrutura JavaScript
 
+```text
+assets/js/
+├── app.js                         # componentes genéricos de interface
+├── layout/
+│   ├── icons.js                   # SVGs compartilhados
+│   └── layout.js                  # menu hambúrguer, topbar, usuário e navegação
+└── integration/
+    ├── core.js                    # API, sessão e helpers
+    ├── auth.js                    # index.html
+    ├── dashboard.js               # dashboard.html
+    ├── estoque.js                 # estoque.html
+    ├── produtos.js                # produtos.html
+    ├── movimentacao.js            # movimentacao.html
+    ├── usuarios.js                # usuarios.html
+    ├── relatorios.js              # relatorios.html
+    └── configuracoes.js           # configuracoes.html
 ```
-nomade/
-├── index.html            → Tela de login
-├── dashboard.html         → Painel de controle (métricas, gráficos, alertas)
-├── estoque.html            → Gestão de estoque (tabela global, filtros)
-├── produtos.html            → Catálogo + cadastro de novo produto/SKU
-├── movimentacao.html         → Entrada / Saída / Retirada de mercadoria
-├── usuarios.html               → Gestão de equipe e permissões
-├── relatorios.html              → Gráficos de desempenho de vendas por ano
-├── configuracoes.html            → Perfil, sistema e segurança
-├── assets/
-│   ├── css/style.css              → Tokens de design e componentes
-│   └── js/
-│       ├── layout.js               → Monta sidebar + topbar em cada página
-│       └── app.js                   → Toasts, steppers, filtros, gráficos CSS
-└── README.md
-```
 
-## Como o layout é montado
+Cada HTML carrega apenas o script de integração correspondente à própria página, além dos arquivos compartilhados necessários.
 
-Cada página interna tem um `<div id="app-shell">` vazio (exceto pelo
-`<div class="content">` com o conteúdo da página). O script
-`assets/js/layout.js` injeta a barra lateral e a barra superior no
-carregamento, a partir de uma única lista de navegação
-(`NOMADE_NAV`), então para adicionar ou renomear um item de menu basta
-editar esse array uma vez.
+## Ordem dos scripts nas páginas internas
 
-## Personalização rápida
+1. Bootstrap
+2. `layout/icons.js`
+3. `layout/layout.js`
+4. `app.js`
+5. `integration/core.js`
+6. `integration/<pagina>.js`
 
-- **Cores e tipografia**: tudo fica em variáveis CSS no topo de
-  `assets/css/style.css` (`:root { --accent: ...; --bg: ...; }`).
-- **Itens de menu**: array `NOMADE_NAV` em `assets/js/layout.js`.
-- **Ícones**: objeto `NOMADE_ICONS` em `assets/js/layout.js` (SVGs inline,
-  sem dependência de ícone externo).
-- **Dados de exemplo** (tabelas, gráficos, alertas): estão direto no HTML
-  de cada página ou em pequenos arrays dentro do `<script>` no final do
-  arquivo — fáceis de trocar por dados reais de uma API.
+A página `index.html` carrega somente Bootstrap, `integration/core.js` e `integration/auth.js`.
 
-## Bibliotecas usadas (via CDN)
+## Execução local
 
-- [Bootstrap 5.3](https://getbootstrap.com/) — grid, modais, componentes base
-- [Google Fonts](https://fonts.google.com/) — Space Grotesk (títulos) + Inter (texto)
+O back-end deve estar ativo em `http://localhost:3000`. O front-end pode ser aberto pelo Express na porta 3000 ou pelo Live Server; os módulos de integração detectam a porta e direcionam as chamadas da API corretamente.
 
-Nenhuma outra dependência é necessária.
+Para testar o cadastro/login, inicie primeiro o servidor Node do back-end e confirme no terminal as mensagens `Conectado ao MySQL com sucesso!` e `Servidor rodando na porta 3000`.
+
+## Navegação
+
+- O menu principal é um painel hambúrguer (off-canvas) em desktop e mobile.
+- `Configurações` não aparece no menu lateral.
+- Clique no usuário no canto superior direito para abrir `Configurações` ou `Sair`.
+
+
+## Tema claro
+
+O tema global é controlado por `assets/js/theme.js`. A preferência é salva em `localStorage` na chave `nomade_theme`.
+
+- `dark`: tema escuro original.
+- `light`: tema claro com `#0000FF` como cor principal, sidebar azul e superfícies claras.
+
+O switch em Configurações aplica a mudança imediatamente e ela permanece ativa entre páginas e recarregamentos.
