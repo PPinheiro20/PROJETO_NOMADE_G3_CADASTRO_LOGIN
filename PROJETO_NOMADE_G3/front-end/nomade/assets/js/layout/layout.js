@@ -50,7 +50,7 @@ function nomadeBuildSidebar(active) {
       </nav>
 
       <div class="sidebar-footer">
-        <a href="#" class="nav-link-app">
+        <a href="suporte.html" class="nav-link-app">
           ${NOMADE_ICONS.help}
           <span>Suporte</span>
         </a>

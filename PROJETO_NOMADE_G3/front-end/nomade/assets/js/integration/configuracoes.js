@@ -58,6 +58,82 @@ function bindPreferenceSettings() {
   });
 }
 
+
+function setPasswordMessage(message, tone = "danger") {
+  const box = document.getElementById("passwordMessage");
+  if (!box) return;
+  box.className = `small mb-3 text-${tone}`;
+  box.textContent = message;
+}
+
+function bindPasswordChange() {
+  const form = document.getElementById("passwordForm");
+  const modalElement = document.getElementById("passwordModal");
+  const button = document.getElementById("savePasswordButton");
+
+  if (!form || !modalElement || !button) return;
+
+  modalElement.addEventListener("show.bs.modal", () => {
+    form.reset();
+    setPasswordMessage("");
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const user = currentUser();
+    const senhaAtual = document.getElementById("senhaAtual").value;
+    const novaSenha = document.getElementById("novaSenha").value;
+    const confirmarSenha = document.getElementById("confirmarNovaSenha").value;
+
+    if (!user?.id_usuario) {
+      setPasswordMessage("Não foi possível identificar o usuário da sessão.");
+      return;
+    }
+
+    if (novaSenha.length < 6) {
+      setPasswordMessage("A nova senha deve ter pelo menos 6 caracteres.");
+      return;
+    }
+
+    if (novaSenha !== confirmarSenha) {
+      setPasswordMessage("A confirmação da nova senha não confere.");
+      return;
+    }
+
+    if (senhaAtual === novaSenha) {
+      setPasswordMessage("A nova senha deve ser diferente da senha atual.");
+      return;
+    }
+
+    button.disabled = true;
+
+    try {
+      const result = await nomadeApi(
+        `/usuarios/${user.id_usuario}/senha`,
+        jsonRequest("PUT", { senhaAtual, novaSenha, confirmarSenha }),
+      );
+
+      setPasswordMessage(result.mensagem || "Senha alterada com sucesso.", "success");
+      nomadeToast(result.mensagem || "Senha alterada com sucesso.");
+      form.reset();
+
+      setTimeout(() => {
+        bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+      }, 600);
+    } catch (error) {
+      setPasswordMessage(error.message);
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
 function bindSettingsLogout() {
   document.getElementById("logoutButton")?.addEventListener("click", () => {
     clearSession();
@@ -68,5 +144,6 @@ function bindSettingsLogout() {
 if (nomadeInitInternalPage("configuracoes", "Pesquisar no sistema...")) {
   fillProfileSettings();
   bindPreferenceSettings();
+  bindPasswordChange();
   bindSettingsLogout();
 }
