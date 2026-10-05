@@ -43,6 +43,29 @@ function bindUserForm() {
   });
 }
 
+function bindCustomizeUser() {
+  const modalEl = document.getElementById("customizeUserModal");
+  const form = document.getElementById("customizeUserForm");
+  if (!modalEl || !form || form.dataset.bound) return;
+  form.dataset.bound = "1";
+
+  // abre o modal com os dados da linha clicada
+  modalEl.addEventListener("show.bs.modal", (event) => {
+    const linha = event.relatedTarget && event.relatedTarget.closest("tr");
+    if (!linha) return;
+    const celulas = linha.querySelectorAll("td");
+    document.getElementById("cUsuario").value = linha.querySelector(".cell-strong").textContent.trim();
+    document.getElementById("cFuncao").value = celulas[1].textContent.trim();
+    document.getElementById("cAcesso").value = celulas[2].textContent.trim();
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+    nomadeToast("Usuário atualizado com sucesso.");
+  });
+}
+
 async function renderUsers() {
   try {
     const users = await nomadeApi("/usuarios");
@@ -64,7 +87,11 @@ async function renderUsers() {
           <td class="cell-muted">${escHtml(user.setor || "-")}</td>
           <td><span class="badge-app badge-success">Ativo</span></td>
           <td class="cell-muted">—</td>
-          <td class="text-end">${rowActions(user.id_usuario, "/usuarios")}</td>
+          <td class="text-end">
+            <button type="button" class="btn-ghost me-2" style="padding:4px 10px;font-size:.78rem"
+              data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
+            ${rowActions(user.id_usuario, "/usuarios")}
+          </td>
         </tr>`).join("") || `<tr><td colspan="6" class="cell-muted text-center">Nenhum usuário cadastrado.</td></tr>`;
     }
 
@@ -73,6 +100,7 @@ async function renderUsers() {
     if (metrics[1]) metrics[1].textContent = users.length;
 
     bindUserForm();
+    bindCustomizeUser();
     bindDeleteButtons(document, renderUsers);
   } catch (error) {
     showError(error.message);
